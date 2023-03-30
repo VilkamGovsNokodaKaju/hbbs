@@ -1,0 +1,16 @@
+#loginCard {
+    width: 25%;
+    min-width: 200px;
+}
+
+#loginDiv {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(255,255,255,0.9);
+    z-index: 1;
+}

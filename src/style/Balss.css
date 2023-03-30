@@ -1,0 +1,19 @@
+#balssDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+#nomDiv {
+    display: flex;
+    flex-direction: column;
+}
+
+#next {
+    margin-left: auto;
+}
+
+#buttonDiv {
+    display: flex;
+}
