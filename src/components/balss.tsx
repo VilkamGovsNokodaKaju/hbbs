@@ -5,7 +5,7 @@ import Nominacija from './nominacija'
 import { Button, Form } from 'react-bootstrap'
 
 export default function Balss() {
-  const [validSession, setSession] = useSessionStorage('validSession', '')
+  const [validSession, setSession] = useSessionStorage('validSession', false)
   const nominacijas = [{title: 'Skurstenis', description: 'Lorem Ipsum'},{title: 'Skolotāju mīlulis', description: 'Lorem Ipsum'},{title: 'Melomāns', description: 'Lorem Ipsum'}]
   const nomarr = nominacijas.map(nominacija => <Nominacija title={nominacija.title} desc={nominacija.description} />)
 
