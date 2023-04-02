@@ -2,10 +2,31 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Balss from './components/balss'
 import './style/index.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import { mongoContext, sistemaContext } from './components/contextProvider'
+import * as Realm from "realm-web";
+
+const realmApp = "hbbs-ntiaq"
+const mongoCluster = "mongodb-atlas"
+
+const app = new Realm.App({ id: realmApp });
+const credentials = Realm.Credentials.anonymous();
+try {
+  const user = await app.logIn(credentials);
+} catch(err) {
+  console.error("Failed to log in", err);
+}
+
+const mongo = app.currentUser.mongoClient(mongoCluster);
+const sistema = mongo.db('data').collection('sistema')
+const sistemasDati = await sistema.findOne({type: 'dati'})
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Balss />
+    <mongoContext.Provider value={mongo}>
+      <sistemaContext.Provider value={sistema}>
+        <Balss />
+      </sistemaContext.Provider>
+    </mongoContext.Provider>
   </React.StrictMode>
 )
