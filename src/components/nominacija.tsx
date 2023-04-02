@@ -10,7 +10,7 @@ const [klase, setKlase] = useState("Klase")
 const mapSkoleni = () => {
     for (let i = 0; i < skoleni.length; i++) {
         if (skoleni[i].klase === klase) {
-            return skoleni[i].skoleni.map(skolens => <option value={`${klase}-${skolens}`}>{skolens}</option>)
+            return skoleni[i].skoleni.map(skolens => <option key={skolens} value={`${klase}-${skolens}`}>{skolens}</option>)
         }
     }
 }
@@ -25,7 +25,7 @@ const mapSkoleni = () => {
                     variant="outline-dark"
                     title={klase}
                 >
-                    {klases.map(klase => <Dropdown.Item value={klase} onClick={() => {setKlase(klase)}}>{klase}</Dropdown.Item>)}
+                    {klases.map(klase => <Dropdown.Item key={klase} value={klase} onClick={() => {setKlase(klase)}}>{klase}</Dropdown.Item>)}
                 </DropdownButton>
                 <Form.Select>
                     <option>Izvēlies skolēnu</option>
