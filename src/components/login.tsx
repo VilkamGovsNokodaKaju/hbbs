@@ -1,4 +1,4 @@
-import { Button, Card, Form } from 'react-bootstrap';
+import { Button, Card, FloatingLabel, Form } from 'react-bootstrap';
 import '../style/login.css'
 
 export default function Login({setSession}) {
@@ -14,7 +14,9 @@ export default function Login({setSession}) {
                 <Card.Body>
                     <Form onSubmit={onSubmit}>
                         <Form.Group className='mb-3'>
-                            <Form.Control type='password' placeholder='Autentifikācijas kods' />
+                            <FloatingLabel label='Autentifikācijas kods'>
+                                <Form.Control type='password' placeholder='Autentifikācijas kods' />
+                            </FloatingLabel>
                         </Form.Group>
                         <Button variant='primary' type='submit'>Autorizēties</Button>
                     </Form>
