@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Balss from './components/balss'
-import './style/index.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { mongoContext, sistemaContext } from './components/contextProvider'
 import * as Realm from "realm-web";
