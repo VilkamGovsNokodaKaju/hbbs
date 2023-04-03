@@ -3,8 +3,7 @@ import '../style/login.css'
 import { useContext, useState } from 'react';
 import { mongoContext, stampContext } from './contextProvider';
 
-export default function Login({setSession}) {
-    const [code, setCode] = useState('')
+export default function Login({setSession, code, setCode}) {
     const [alert, showAlert] = useState(false)
     const [alertMsg, setAlertMsg] = useState('')
     const mongo = useContext(mongoContext)
@@ -13,8 +12,12 @@ export default function Login({setSession}) {
 
     async function onSubmit(e) {
         e.preventDefault();
+        location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         codes.findOne({kods: code}).then(
             (result) => {
+                if (result === null) {
+                    showAlert(true)
+                    setAlertMsg('Autentifikācijas kods neatbilst!')
                 } else if (Date.now() >= stamps.nomiStartStamp && Date.now() <= stamps.nomiEndStamp) {
                     if (result.nominets === false) {
                         setSession(true)
@@ -33,7 +36,7 @@ export default function Login({setSession}) {
             },
             (error) => {
                 showAlert(true)
-                setAlertMsg('Autentifikācijas kods neatbilst!')
+                setAlertMsg(`Sistēmas kļūda: ${error}`)
             }
         )
     }
@@ -43,15 +46,17 @@ export default function Login({setSession}) {
             <Card id='loginCard'>
                 <Card.Header>Autorizācija</Card.Header>
                 <Card.Body>
-                    <Form className='mb-3' onSubmit={onSubmit}>
+                    <Form onSubmit={onSubmit}>
                         <Form.Group className='mb-3'>
                             <FloatingLabel label='Autentifikācijas kods'>
                                 <Form.Control type='password' placeholder='Autentifikācijas kods' value={code} onChange={(e) => setCode(e.target.value)} />
                             </FloatingLabel>
                         </Form.Group>
-                        <Button variant='primary' type='submit'>Autorizēties</Button>
+                        <center>
+                            <Button variant='primary' type='submit'>Autorizēties</Button>
+                        </center>
                     </Form>
-                    {alert && <Alert variant='danger'>{alertMsg}</Alert>}
+                    {alert && <Alert className='mt-3' variant='danger'>{alertMsg}</Alert>}
                 </Card.Body>
             </Card>
         </div>
