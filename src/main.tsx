@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Balss from './components/balss'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { mongoContext, sistemaContext } from './components/contextProvider'
+import { mongoContext, nominContext, stampContext } from './components/contextProvider'
 import * as Realm from "realm-web";
 
 const realmApp = "hbbs-ntiaq"
@@ -18,14 +18,17 @@ try {
 
 const mongo = app.currentUser.mongoClient(mongoCluster);
 const sistema = mongo.db('data').collection('sistema')
-const sistemasDati = await sistema.findOne({type: 'dati'})
+const stamps = await sistema.findOne({type: 'stamps'})
+const nominacijas = await sistema.findOne({type: 'nominacijas'})
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <mongoContext.Provider value={mongo}>
-      <sistemaContext.Provider value={sistema}>
-        <Balss />
-      </sistemaContext.Provider>
+      <stampContext.Provider value={stamps}>
+        <nominContext.Provider value={nominacijas}>
+          <Balss />
+        </nominContext.Provider>
+      </stampContext.Provider>
     </mongoContext.Provider>
   </React.StrictMode>
 )

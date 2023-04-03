@@ -1,6 +1,7 @@
 import { createContext } from "react";
 
 const mongoContext = createContext(null)
-const sistemaContext = createContext(null)
+const stampContext = createContext(null)
+const nominContext = createContext(null)
 
-export {mongoContext, sistemaContext}
+export {mongoContext, stampContext, nominContext}

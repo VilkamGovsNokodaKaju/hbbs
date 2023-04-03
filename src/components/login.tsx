@@ -1,7 +1,7 @@
 import { Alert, Button, Card, FloatingLabel, Form } from 'react-bootstrap';
 import '../style/login.css'
 import { useContext, useState } from 'react';
-import { mongoContext, sistemaContext } from './contextProvider';
+import { mongoContext, stampContext } from './contextProvider';
 
 export default function Login({setSession}) {
     const [code, setCode] = useState('')
@@ -9,20 +9,20 @@ export default function Login({setSession}) {
     const [alertMsg, setAlertMsg] = useState('')
     const mongo = useContext(mongoContext)
     const codes = mongo.db('auth').collection('codes')
-    const sistemasDati = useContext(sistemaContext)
+    const stamps = useContext(stampContext)
 
     async function onSubmit(e) {
         e.preventDefault();
         codes.findOne({kods: code}).then(
             (result) => {
-                if (Date.now() >= sistemasDati.stamps.nomiStartStamp && Date.now() <= sistemasDati.stamps.nomiEndStamp) {
+                } else if (Date.now() >= stamps.nomiStartStamp && Date.now() <= stamps.nomiEndStamp) {
                     if (result.nominets === false) {
                         setSession(true)
                     } else {
                         showAlert(true)
                         setAlertMsg('Nominācijas forma jau aizpildīta!')
                     }
-                } else if (Date.now() >= sistemasDati.stamps.voteStartStamp && Date.now() <= sistemasDati.stamps.voteEndStamp) {
+                } else if (Date.now() >= stamps.voteStartStamp && Date.now() <= stamps.voteEndStamp) {
                     if (result.balsots === false) {
                         setSession(true)
                     } else {
