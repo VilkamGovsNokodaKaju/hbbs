@@ -4,21 +4,22 @@ import Login from './login'
 import Nominacija from './nominacija'
 import { Button, Form } from 'react-bootstrap'
 import { nominContext } from './contextProvider'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 
 export default function Balss() {
   const [validSession, setSession] = useSessionStorage('validSession', false)
   const [code, setCode] = useSessionStorage('voteCode', '')
+  const [vote, setVote] = useState({})
   const nominacijas = useContext(nominContext)
   const skolenNomi = nominacijas.skoleni
   const skolotNomi = nominacijas.skolotaji
-  const skolenNomarr = skolenNomi.map(nominacija => <Nominacija key={nominacija.title} title={nominacija.title} desc={nominacija.desc} skolens={true} />)
-  const skolotNomarr = skolotNomi.map(nominacija => <Nominacija key={nominacija.title} title={nominacija.title} desc={nominacija.desc} skolens={false} />)
+  const skolenNomarr = skolenNomi.map(nominacija => <Nominacija key={nominacija.title} title={nominacija.title} desc={nominacija.desc} skolens={true} vote={vote} setVote={setVote} />)
+  const skolotNomarr = skolotNomi.map(nominacija => <Nominacija key={nominacija.title} title={nominacija.title} desc={nominacija.desc} skolens={false} vote={vote} setVote={setVote} />)
 
   return (
     <div id='balssDiv'>
       {!validSession && <Login setSession={setSession} code={code} setCode={setCode} />}
-      <Form className='m-3'>
+      <Form className='m-3 mx-auto' id='balssForm'>
         <center>
           <h3>Skolēnu nominācijas</h3>
         </center>
