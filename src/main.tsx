@@ -32,3 +32,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </mongoContext.Provider>
   </React.StrictMode>
 )
+
+export { app }
