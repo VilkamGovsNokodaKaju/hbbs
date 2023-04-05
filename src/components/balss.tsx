@@ -11,10 +11,8 @@ export default function Balss() {
   const [code, setCode] = useSessionStorage('voteCode', '')
   const [vote, setVote] = useState({})
   const nominacijas = useContext(nominContext)
-  const skolenNomi = nominacijas.skoleni
-  const skolotNomi = nominacijas.skolotaji
-  const skolenNomarr = skolenNomi.map(nominacija => <Nominacija key={nominacija.title} title={nominacija.title} desc={nominacija.desc} skolens={true} vote={vote} setVote={setVote} />)
-  const skolotNomarr = skolotNomi.map(nominacija => <Nominacija key={nominacija.title} title={nominacija.title} desc={nominacija.desc} skolens={false} vote={vote} setVote={setVote} />)
+  const skolenNomarr = nominacijas.skoleni.map(nominacija => <Nominacija key={nominacija.title} title={nominacija.title} desc={nominacija.desc} skolens={true} vote={vote} setVote={setVote} />)
+  const skolotNomarr = nominacijas.skolotaji.map(nominacija => <Nominacija key={nominacija.title} title={nominacija.title} desc={nominacija.desc} skolens={false} vote={vote} setVote={setVote} />)
 
   return (
     <div id='balssDiv'>
