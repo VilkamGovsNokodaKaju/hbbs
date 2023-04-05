@@ -1,20 +1,20 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Dropdown, DropdownButton, Form, InputGroup } from "react-bootstrap";
 import '../style/nominacija.css'
+import { klasContext, skolotContext } from "./contextProvider";
 
 export default function Nominacija({title, desc, skolens, vote, setVote}) {
     const [value, setValue] = useState('')
-    const klases = ["12.1", "12.2", "12.3", "12.4", "12.5", "12.6"]
-    const klasarr = klases.map(klase => <Dropdown.Item key={klase} value={klase} onClick={() => {setKlase(klase)}}>{klase}</Dropdown.Item>)
-    const skoleni = [{klase: "12.1", skoleni: ["fizikis", "matematikis"]}, {klase: "12.2", skoleni: ["biodio", "big pharma"]}, {klase: "12.3", skoleni: ["ultra biodio", "small pharma"]}]
-    const skolotaji = ['Lankovska', 'Mihno']
-    const skolotarr = skolotaji.map(skolotajs => <option key={skolotajs} value={skolotajs}>{skolotajs}</option>)
     const [klase, setKlase] = useState("Klase")
+    const klases = useContext(klasContext)
+    const skolotaji = useContext(skolotContext)
+    const klasarr = Object.getOwnPropertyNames(klases).map(klase => <Dropdown.Item key={klase} value={klase} onClick={() => {setKlase(klase)}}>{klase}</Dropdown.Item>)
+    const skolotarr = skolotaji.map(skolotajs => <option key={skolotajs} value={skolotajs}>{skolotajs}</option>)
 
     const mapSkoleni = () => {
-        for (let i = 0; i < skoleni.length; i++) {
-            if (skoleni[i].klase === klase) {
-                return skoleni[i].skoleni.map(skolens => <option key={skolens} value={`${klase}_${skolens}`}>{skolens}</option>)
+        for (const prop in klases) {
+            if (prop === klase) {
+                return klases[prop].map(skolens => <option key={skolens} value={`${klase}_${skolens}`}>{skolens}</option>)
             }
         }
     }
