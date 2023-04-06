@@ -24,7 +24,7 @@ export default function Nominacija({title, desc, skolens, vote, setVote}) {
             <Form.Label className="h5">{title}</Form.Label>
             <br />
             <Form.Text className="text-muted">{desc}</Form.Text>
-            {skolens === true ? 
+            {skolens ? 
                 <InputGroup>
                     <DropdownButton variant="outline-dark" title={klase}>
                         {klasarr}
