@@ -19,10 +19,11 @@ try {
 const mongo = app.currentUser.mongoClient(mongoCluster);
 const sistema = mongo.db('data').collection('sistema')
 const sistemasDati = await sistema.find()
-const stamps = sistemasDati.find(doc => doc.type === 'stamps')
-const nominacijas = sistemasDati.find(doc => doc.type === 'nominacijas')
-const klases = sistemasDati.find(doc => doc.type === 'klases')
-const skolotaji = sistemasDati.find(doc => doc.type === 'skolotaji')
+const stamps = sistemasDati.find(doc => doc._id === 'stamps')
+const nominacijas = sistemasDati.find(doc => doc._id === 'nominacijas')
+const klases = sistemasDati.find(doc => doc._id === 'klases')
+const skolotaji = sistemasDati.find(doc => doc._id === 'skolotaji')
+const balsis = mongo.db('data').collection('balsis')
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
