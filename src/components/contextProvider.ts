@@ -1,6 +1,5 @@
 import { createContext } from "react";
 
-const mongoContext = createContext(null)
 const stampContext = createContext(null)
 const nominContext = createContext(null)
 const klasContext = createContext(null)

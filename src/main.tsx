@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Balss from './components/balss'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { klasContext, mongoContext, nominContext, skolotContext, stampContext } from './components/contextProvider'
+import { balssContext, klasContext, nominContext, skolotContext, stampContext } from './components/contextProvider'
 import * as Realm from "realm-web";
 
 const realmApp = "hbbs-ntiaq"
@@ -26,17 +26,15 @@ const skolotaji = sistemasDati.find(doc => doc.type === 'skolotaji')
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <mongoContext.Provider value={mongo}>
-      <stampContext.Provider value={stamps}>
-        <nominContext.Provider value={nominacijas}>
-          <klasContext.Provider value={klases.list}>
-            <skolotContext.Provider value={skolotaji.list}>
+    <stampContext.Provider value={stamps}>
+      <nominContext.Provider value={nominacijas}>
+        <klasContext.Provider value={klases.list}>
+          <skolotContext.Provider value={skolotaji.list}>
               <Balss />
-            </skolotContext.Provider>
-          </klasContext.Provider>
-        </nominContext.Provider>
-      </stampContext.Provider>
-    </mongoContext.Provider>
+          </skolotContext.Provider>
+        </klasContext.Provider>
+      </nominContext.Provider>
+    </stampContext.Provider>
   </React.StrictMode>
 )
 
