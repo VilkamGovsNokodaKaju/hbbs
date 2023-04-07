@@ -24,6 +24,7 @@ const nominacijas = sistemasDati.find(doc => doc._id === 'nominacijas')
 const klases = sistemasDati.find(doc => doc._id === 'klases')
 const skolotaji = sistemasDati.find(doc => doc._id === 'skolotaji')
 const balsis = mongo.db('data').collection('balsis')
+const balssDati = await balsis.find()
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -31,7 +32,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <nominContext.Provider value={nominacijas}>
         <klasContext.Provider value={klases.list}>
           <skolotContext.Provider value={skolotaji.list}>
+            <balssContext.Provider value={balssDati}>
               <Balss />
+            </balssContext.Provider>
           </skolotContext.Provider>
         </klasContext.Provider>
       </nominContext.Provider>

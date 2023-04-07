@@ -1,17 +1,19 @@
 import { useContext, useState } from "react";
 import { Dropdown, DropdownButton, Form, InputGroup } from "react-bootstrap";
 import '../style/nominacija.css'
-import { klasContext, skolotContext } from "./contextProvider";
+import { balssContext, klasContext, skolotContext } from "./contextProvider";
 
 export default function Nominacija({title, desc, skolens, vote, setVote, isNomiTime, isVoteTime}) {
     const [value, setValue] = useState('')
     const [klase, setKlase] = useState("Klase")
+    const balsis = useContext(balssContext)
     const klases = useContext(klasContext)
     const skolotaji = useContext(skolotContext)
     const klasarr = Object.getOwnPropertyNames(klases).map(klase => <Dropdown.Item key={klase} value={klase} onClick={() => {setKlase(klase)}}>{klase}</Dropdown.Item>)
     const skolotarr = skolotaji.map(skolotajs => <option key={skolotajs} value={skolotajs}>{skolotajs}</option>)
+    const balss = balsis.find(balss => balss._id === title)
 
-    const mapSkoleni = () => {
+    function mapSkoleni() {
         for (const prop in klases) {
             if (prop === klase) {
                 return klases[prop].map(skolens => <option key={skolens} value={`${klase}_${skolens}`}>{skolens}</option>)
@@ -49,4 +51,13 @@ export default function Nominacija({title, desc, skolens, vote, setVote, isNomiT
             </Form.Group>
         )
     } else if (isVoteTime) {
+        return (
+            <Form.Group className="mb-3">
+                <Form.Label className="h5">{title}</Form.Label>
+                <br />
+                <Form.Text className="text-muted">{desc}</Form.Text>
+                {findTop3()}
+            </Form.Group>
+        )
+    }
 }
