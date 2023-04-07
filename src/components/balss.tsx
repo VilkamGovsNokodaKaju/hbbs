@@ -11,9 +11,6 @@ export default function Balss() {
   const [validSession, setSession] = useSessionStorage('validSession', false)
   const [code, setCode] = useSessionStorage('voteCode', '')
   const [vote, setVote] = useState({})
-  const nominacijas = useContext(nominContext)
-  const skolenNomarr = nominacijas.skoleni.map(nominacija => <Nominacija key={nominacija.title} title={nominacija.title} desc={nominacija.desc} skolens={true} vote={vote} setVote={setVote} />)
-  const skolotNomarr = nominacijas.skolotaji.map(nominacija => <Nominacija key={nominacija.title} title={nominacija.title} desc={nominacija.desc} skolens={false} vote={vote} setVote={setVote} />)
 
   const stamps = useContext(stampContext)
   const isNomiTime = Date.now() >= stamps.nomiStartStamp && Date.now() <= stamps.nomiEndStamp
@@ -25,6 +22,10 @@ export default function Balss() {
       return false
     }
   })
+
+  const nominacijas = useContext(nominContext)
+  const skolenNomarr = nominacijas.skoleni.map(nominacija => <Nominacija key={nominacija.title} title={nominacija.title} desc={nominacija.desc} skolens={true} vote={vote} setVote={setVote} isNomiTime={isNomiTime} isVoteTime={isVoteTime} />)
+  const skolotNomarr = nominacijas.skolotaji.map(nominacija => <Nominacija key={nominacija.title} title={nominacija.title} desc={nominacija.desc} skolens={false} vote={vote} setVote={setVote} isNomiTime={isNomiTime} isVoteTime={isVoteTime} />)
 
   function determineEndTime() {
     if (Date.now() < stamps.nomiStartStamp) {
