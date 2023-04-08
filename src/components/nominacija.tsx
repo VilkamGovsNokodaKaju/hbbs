@@ -43,7 +43,7 @@ export default function Nominacija({title, desc, skolens, vote, setVote, isNomiT
                         </Form.Select>
                     </InputGroup>
                 :
-                    <Form.Select>
+                    <Form.Select value={value} onChange={e => {setValue(e.target.value); setVote({...vote, [title]: e.target.value})}}>
                         <option>Izvēlies skolotāju</option>
                         {skolotarr}
                     </Form.Select>
