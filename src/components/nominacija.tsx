@@ -22,8 +22,14 @@ export default function Nominacija({title, desc, skolens, vote, setVote, isNomiT
     }
 
     function findTop3() {
-        const top3 = Object.entries(balss).sort((a, b) => b[1] - a[1]).slice(0, 3)
-        return top3.map(cilveks => <Form.Check type="radio" id={cilveks[0]} label={cilveks[0]} />)
+        console.log(balss)
+        if (typeof balss !== 'object') {
+            return 'Neviens nebalsoja'
+        } else if (Object.entries(balss).length < 2) {
+            return 'Neviens nebalsoja'
+        }
+        const top3 = Object.entries(balss.vote1).sort((a, b) => b[1] - a[1]).slice(0, 3)
+        return top3.map(cilveks => <Form.Check type="radio" id={`${title}|${cilveks[0]}`} label={cilveks[0].replace('-', '.').replace('_', ' ')} checked={value === cilveks[0]} onChange={e => {setValue(e.target.id); setVote({...vote, [title]: e.target.id.split('|')[1]})}} />)
     }
 
     if (isNomiTime) {
