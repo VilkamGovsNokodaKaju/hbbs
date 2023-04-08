@@ -16,7 +16,7 @@ export default function Nominacija({title, desc, skolens, vote, setVote, isNomiT
     function mapSkoleni() {
         for (const prop in klases) {
             if (prop === klase) {
-                return klases[prop].map(skolens => <option key={skolens} value={`${klase}_${skolens}`}>{skolens}</option>)
+                return klases[prop].map(skolens => <option key={skolens} value={`${klase.replace('.', '-')}_${skolens}`}>{skolens}</option>)
             }
         }
     }
