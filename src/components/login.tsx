@@ -9,7 +9,6 @@ export default function Login({setSession, code, setCode}) {
 
     async function onSubmit(e) {
         e.preventDefault();
-        location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         app.currentUser.functions.authFunc(code).then(
             (result) => {
                 if (result === 'invalid') {
