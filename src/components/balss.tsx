@@ -23,6 +23,8 @@ export default function Balss() {
   const [hideTimer, setHideTimer] = useState(() => {
     if (isNomiTime || isVoteTime) {
       return true
+    } else if (Date.now() > stamps.voteEndStamp) {
+      return false
     } else {
       return false
     }
@@ -33,10 +35,14 @@ export default function Balss() {
   const skolotNomarr = nominacijas.skolotaji.map(nominacija => <Nominacija key={nominacija.title} title={nominacija.title} desc={nominacija.desc} skolens={false} vote={vote} setVote={setVote} isNomiTime={isNomiTime} isVoteTime={isVoteTime} />)
 
   function determineEndTime() {
-    if (Date.now() < stamps.nomiStartStamp) {
-      return stamps.nomiStartStamp
-    } else if (Date.now() > stamps.nomiEndStamp && Date.now() < stamps.voteStartStamp) {
-      return stamps.voteStartStamp
+    const now = Date.now()
+    for (const stamp in stamps) {
+      if (now < stamps[stamp]) {
+        return stamps[stamp]
+      }
+      if (stamp === 'voteEndStamp') {
+        return 0
+      }
     }
   }
 
@@ -79,6 +85,8 @@ export default function Balss() {
           {!validSession && <Login setSession={setSession} code={code} setCode={setCode} />}
           <Form className='m-3 mx-auto' id='balssForm' onSubmit={onSubmit}>
             <center>
+              <h5>{Date.now() < stamps.nomiEndStamp && 'Nominēšana'}{(Date.now() > stamps.voteStartStamp && Date.now() < stamps.voteEndStamp) && 'Balsošana'} noslēgsies pēc:</h5>
+              <Timer endTime={determineEndTime()} setHideTimer={setHideTimer} small={true} />
               <h3>Skolēnu nominācijas</h3>
             </center>
             {skolenNomarr}
@@ -97,8 +105,8 @@ export default function Balss() {
         </div>
       :
         <div id='timerDiv'>
-          <h2>{Date.now() < stamps.nomiStartStamp && 'Nominēšana'}{(Date.now() > stamps.nomiEndStamp && Date.now() < stamps.voteStartStamp) && 'Balsošana'} būs pieejama pēc:</h2>
-          <Timer endTime={determineEndTime()} setHideTimer={setHideTimer} />
+          {determineEndTime() !== 0 && <h2>{Date.now() < stamps.nomiStartStamp && 'Nominēšana'}{(Date.now() > stamps.nomiEndStamp && Date.now() < stamps.voteStartStamp) && 'Balsošana'} būs pieejama pēc:</h2>}
+          <Timer endTime={determineEndTime()} setHideTimer={setHideTimer} small={false} />
         </div>
       }
     </div>
