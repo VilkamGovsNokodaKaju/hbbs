@@ -1,7 +1,7 @@
 #root:empty {
     position: absolute;
-    top: calc(50% - 4rem);
-    left: calc(50% - 4rem);
+    top: calc(50% - 3rem);
+    left: calc(50% - 3rem);
     width: 6rem;
     height: 6rem;
     border: 1rem solid rgba(0, 0, 0, 0.2);
