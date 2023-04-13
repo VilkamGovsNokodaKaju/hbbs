@@ -81,9 +81,9 @@ export default function Balss() {
   return (
     <div>
       {hideTimer ?
-        <div id='balssDiv'>
+        <div id='balssDiv' className='m-3'>
           {!validSession && <Login setSession={setSession} code={code} setCode={setCode} />}
-          <Form className='m-3 mx-auto' id='balssForm' onSubmit={onSubmit}>
+          <Form className='mx-auto' id='balssForm' onSubmit={onSubmit}>
             <center>
               <h5>{Date.now() < stamps.nomiEndStamp && 'Nominēšana'}{(Date.now() > stamps.voteStartStamp && Date.now() < stamps.voteEndStamp) && 'Balsošana'} noslēgsies pēc:</h5>
               <Timer endTime={determineEndTime()} setHideTimer={setHideTimer} small={true} />
