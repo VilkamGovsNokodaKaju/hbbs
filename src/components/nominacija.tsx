@@ -24,7 +24,7 @@ export default function Nominacija({title, desc, skolens, vote, setVote, isNomiT
     function findTop3() {
         if (typeof balss !== 'object') {
             return 'Neviens nebalsoja'
-        } else if (Object.entries(balss).length < 2) {
+        } else if (!balss.hasOwnProperty('vote1')) {
             return 'Neviens nebalsoja'
         }
         const top3 = Object.entries(balss.vote1).sort((a, b) => b[1] - a[1]).slice(0, 3)
