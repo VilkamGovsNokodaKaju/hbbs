@@ -22,7 +22,6 @@ export default function Nominacija({title, desc, skolens, vote, setVote, isNomiT
     }
 
     function findTop3() {
-        console.log(balss)
         if (typeof balss !== 'object') {
             return 'Neviens nebalsoja'
         } else if (Object.entries(balss).length < 2) {
