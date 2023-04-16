@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Dropdown, DropdownButton, Form, InputGroup } from "react-bootstrap";
-import '../style/nominacija.css'
+import '/../style/nominacija.css'
 import { balssContext, klasContext, skolotContext } from "./contextProvider";
 
 export default function Nominacija({title, desc, skolens, vote, setVote, isNomiTime, isVoteTime}) {

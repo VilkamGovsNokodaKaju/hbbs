@@ -1,5 +1,5 @@
 import ChartsEmbedSDK, { getRealmUserToken } from '@mongodb-js/charts-embed-dom';
-import '../style/dash.css'
+import '/../style/dash.css'
 import { useEffect } from 'react';
 
 export default function Dashboard({app}) {
