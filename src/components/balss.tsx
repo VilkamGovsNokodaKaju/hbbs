@@ -6,7 +6,7 @@ import { Alert, Button, Form } from 'react-bootstrap'
 import { nominContext, stampContext } from './contextProvider'
 import { useContext, useState } from 'react'
 import Timer from './timer'
-import { app } from '../main'
+import { app } from '../routes/root'
 
 export default function Balss() {
   const [validSession, setSession] = useSessionStorage('validSession', false)
