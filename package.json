@@ -1,7 +1,14 @@
 {
   "name": "hbbs",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "license": "BSD-3-Clause-Clear",
+  "description": "Hāgena balvas balsošanas sistēma",
+  "author": {
+    "name": "Nils Niklāvs Plūmiņš",
+    "email": "voidzencorp@gmail.com",
+    "url": "https://github.com/voidvisor"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
