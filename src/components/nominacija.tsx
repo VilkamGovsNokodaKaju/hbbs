@@ -22,13 +22,11 @@ export default function Nominacija({title, desc, skolens, vote, setVote, isNomiT
     }
 
     function findTop3() {
-        if (typeof balss !== 'object') {
-            return 'Neviens nebalsoja'
-        } else if (!balss.hasOwnProperty('vote1')) {
+        if (balss.vote1.length === 0) {
             return 'Neviens nebalsoja'
         }
-        const top3 = Object.entries(balss.vote1).sort((a: [string, number], b: [string, number]) => b[1] - a[1]).slice(0, 3)
-        return top3.map(cilveks => <Form.Check type="radio" key={`${title}|${cilveks[0]}`} id={`${title}|${cilveks[0]}`} label={cilveks[0].replace('-', '.').replace('_', ' ')} checked={value === `${title}|${cilveks[0]}`} onChange={e => {setValue(e.target.id); setVote({...vote, [title]: e.target.id.split('|')[1]})}} />)
+        const top3 = balss.vote1.sort((a: {cilveks: string, skaits: number}, b: {cilveks: string, skaits: number}) => b[1] - a[1]).slice(0, 3)
+        return top3.map(cilveks => <Form.Check type="radio" key={`${title}|${cilveks.cilveks}`} id={`${title}|${cilveks.cilveks}`} label={cilveks.cilveks.replace('-', '.').replace('_', ' ')} checked={value === `${title}|${cilveks.cilveks}`} onChange={e => {setValue(e.target.id); setVote({...vote, [title]: e.target.id.split('|')[1]})}} />)
     }
 
     if (isNomiTime) {
