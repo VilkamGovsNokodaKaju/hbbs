@@ -1,5 +1,5 @@
 import { Alert, Button, Card, FloatingLabel, Form } from 'react-bootstrap';
-import '../style/login.css'
+import './../styles/login.css';
 import { useState } from 'react';
 import { app as regApp } from '../routes/root';
 import { app as adminApp } from '../routes/admin';
