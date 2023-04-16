@@ -1,4 +1,4 @@
-import '/../style/balss.css'
+import '../style/balss.css'
 import {useSessionStorage} from './sessionStorage.js'
 import Login from './login'
 import Nominacija from './nominacija'
