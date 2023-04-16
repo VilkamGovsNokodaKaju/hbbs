@@ -29,7 +29,7 @@ async function dataFetch() {
     return {stamps, nominacijas, klases, skolotaji, balssDati}
 }
 
-export default function Root() {
+export default function Root({codeParam}) {
     const [stamps, setStamps] = useState(null)
     const [nominacijas, setNominacijas] = useState(null)
     const [klases, setKlases] = useState(null)
@@ -55,7 +55,7 @@ export default function Root() {
                     <klasContext.Provider value={klases}>
                         <skolotContext.Provider value={skolotaji}>
                             <balssContext.Provider value={balssDati}>
-                                <Balss />
+                                <Balss codeParam={codeParam} />
                             </balssContext.Provider>
                         </skolotContext.Provider>
                     </klasContext.Provider>

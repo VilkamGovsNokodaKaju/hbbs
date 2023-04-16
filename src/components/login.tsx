@@ -1,6 +1,6 @@
 import { Alert, Button, Card, FloatingLabel, Form } from 'react-bootstrap';
 import '../style/login.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { app as regApp } from '../routes/root';
 import { app as adminApp } from '../routes/admin';
 import * as Realm from "realm-web";
@@ -13,12 +13,19 @@ interface loginProps {
 }
 
 export default function Login({setSession, code, setCode, type}: loginProps) {
+    const initialCode = code
     const [alert, showAlert] = useState(false)
     const [alertMsg, setAlertMsg] = useState('')
     const [apiKey, setApiKey] = useState('')
 
+    useEffect(() => {
+        if (initialCode) {
+            onRegSubmit(null)
+        }
+    })
+
     async function onRegSubmit(e) {
-        e.preventDefault();
+        (e) && e.preventDefault();
         regApp.currentUser.functions.authFunc(code).then(
             (result) => {
                 if (result === 'invalid') {

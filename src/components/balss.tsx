@@ -8,9 +8,9 @@ import { useContext, useState } from 'react'
 import Timer from './timer'
 import { app } from '../routes/root'
 
-export default function Balss() {
+export default function Balss({codeParam}) {
   const [validSession, setSession] = useSessionStorage('validSession', false)
-  const [code, setCode] = useSessionStorage('voteCode', '')
+  const [code, setCode] = useSessionStorage('voteCode', (codeParam) ? codeParam : '')
   const [vote, setVote] = useState({})
   const [alert, showAlert] = useState(false)
   const [alertMsg, setAlertMsg] = useState('')

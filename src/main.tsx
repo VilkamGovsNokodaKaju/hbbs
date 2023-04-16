@@ -5,6 +5,6 @@ import Router from './components/router'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Router url={window.location.pathname} />
+    <Router url={window.location.pathname} params={new URLSearchParams(window.location.search)} />
   </React.StrictMode>
 )
