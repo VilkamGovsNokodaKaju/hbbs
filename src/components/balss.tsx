@@ -79,7 +79,7 @@ export default function Balss() {
   }
 
   return (
-    <div>
+    <div id='backgroundDiv'>
       {hideTimer ?
         <div id='balssDiv' className='m-3'>
           {!validSession && <Login setSession={setSession} code={code} setCode={setCode} />}
