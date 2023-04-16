@@ -108,7 +108,7 @@ export default function Balss() {
       :
         <div id='timerDiv'>
           {determineEndTime() !== 0 && <h2>{Date.now() < stamps.nomiStartStamp && 'Nominēšana'}{(Date.now() > stamps.nomiEndStamp && Date.now() < stamps.voteStartStamp) && 'Balsošana'} būs pieejama pēc:</h2>}
-          <Timer endTime={determineEndTime()} setHideTimer={setHideTimer} small={false} />
+          <Timer endTime={determineEndTime()} small={false} />
         </div>
       }
     </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function timer({endTime, setHideTimer, small}) {
+export default function timer({endTime, small}) {
     const [days, setDays] = useState('00')
     const [hours, setHours] = useState('00')
     const [minutes, setMinutes] = useState('00')
@@ -9,19 +9,10 @@ export default function timer({endTime, setHideTimer, small}) {
     function calcTime() {
         const diff = endTime - Date.now()
         if (diff < 1000) {
-            if (!small) {
-                if (endTime === 0) {
-                    return
-                }
-                setHideTimer(true)
-                window.location.reload()
-            } else {
-                if (endTime === 0) {
-                    return
-                }
-                setHideTimer(false)
-                window.location.reload()
+            if (endTime === 0) {
+                return
             }
+            window.location.reload()
         }
 
         setDays(Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0'))
