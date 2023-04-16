@@ -81,27 +81,29 @@ export default function Balss() {
   return (
     <div id='backgroundDiv'>
       {hideTimer ?
-        <div id='balssDiv' className='m-3'>
-          {!validSession && <Login setSession={setSession} code={code} setCode={setCode} />}
-          <Form className='mx-auto' id='balssForm' onSubmit={onSubmit}>
-            <center>
-              <h5>{Date.now() < stamps.nomiEndStamp && 'Nominēšana'}{(Date.now() > stamps.voteStartStamp && Date.now() < stamps.voteEndStamp) && 'Balsošana'} noslēgsies pēc:</h5>
-              <Timer endTime={determineEndTime()} setHideTimer={setHideTimer} small={true} />
-              <h3>Skolēnu nominācijas</h3>
-            </center>
-            {skolenNomarr}
-            <center>
-              <h3>Skolotāju nominācijas</h3>
-            </center>
-            {skolotNomarr}
-            <center>
-              {alert && <Alert className='mt-3' variant='danger'>{alertMsg}</Alert>}
-              {success && <Alert className='mt-3' variant='success'>{successMsg}</Alert>}
-              <Button variant="primary" type="submit">
-                Balsot
-              </Button>
-            </center>
-          </Form>
+        <div id='balssDiv'>
+          {!validSession && <Login setSession={setSession} code={code} setCode={setCode} type='reg' />}
+          <div className='p-3'>
+            <Form className='mx-auto' id='balssForm' onSubmit={onSubmit}>
+              <center>
+                <h5>{Date.now() < stamps.nomiEndStamp && 'Nominēšana'}{(Date.now() > stamps.voteStartStamp && Date.now() < stamps.voteEndStamp) && 'Balsošana'} noslēgsies pēc:</h5>
+                <Timer endTime={determineEndTime()} small={true} />
+                <h3>Skolēnu nominācijas</h3>
+              </center>
+              {skolenNomarr}
+              <center>
+                <h3>Skolotāju nominācijas</h3>
+              </center>
+              {skolotNomarr}
+              <center>
+                {alert && <Alert className='mt-3' variant='danger'>{alertMsg}</Alert>}
+                {success && <Alert className='mt-3' variant='success'>{successMsg}</Alert>}
+                <Button variant="primary" type="submit">
+                  Balsot
+                </Button>
+              </center>
+            </Form>
+          </div>
         </div>
       :
         <div id='timerDiv'>
