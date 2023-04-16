@@ -6,10 +6,5 @@ export default defineConfig({
   plugins: [react()],
   build: {
     target: 'esnext',
-  },
-  resolve: {
-    alias: {
-      '../style': './src/style',
-    }
   }
 })
