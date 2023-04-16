@@ -36,10 +36,10 @@ export default function Nominacija({title, desc, skolens, vote, setVote, isNomiT
             <Form.Group className="mb-3">
                 <Form.Label className="h5">{title}</Form.Label>
                 <br />
-                <Form.Text className="text-muted">{desc}</Form.Text>
+                <Form.Text>{desc}</Form.Text>
                 {skolens ? 
                     <InputGroup>
-                        <DropdownButton variant="outline-dark" title={klase}>
+                        <DropdownButton variant="outline-light" title={klase}>
                             {klasarr}
                         </DropdownButton>
                         <Form.Select value={value} onChange={e => {setValue(e.target.value); setVote({...vote, [title]: e.target.value})}}>
@@ -60,7 +60,7 @@ export default function Nominacija({title, desc, skolens, vote, setVote, isNomiT
             <Form.Group className="mb-3">
                 <Form.Label className="h5">{title}</Form.Label>
                 <br />
-                <Form.Text className="text-muted">{desc}</Form.Text>
+                <Form.Text>{desc}</Form.Text>
                 {findTop3()}
             </Form.Group>
         )
