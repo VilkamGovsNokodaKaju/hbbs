@@ -8,6 +8,8 @@ const mongoCluster = "mongodb-atlas"
 
 const app = new Realm.App({ id: realmApp });
 
+let dataFetched = false
+
 async function dataFetch() {
     const credentials = Realm.Credentials.anonymous();
     try {
@@ -37,7 +39,7 @@ export default function Root({codeParam}) {
     const [balssDati, setBalsis] = useState(null)
     const [ready, setReady] = useState(false)
 
-    useEffect(() => {
+    if (!dataFetched) {
         dataFetch().then(({stamps, nominacijas, klases, skolotaji, balssDati}) => {
             setStamps(stamps)
             setNominacijas(nominacijas)
@@ -45,8 +47,9 @@ export default function Root({codeParam}) {
             setSkolotaji(skolotaji.list)
             setBalsis(balssDati)
             setReady(true)
+            dataFetched = true
         })
-    })
+    }
 
     if (ready) {
         return (
