@@ -6,17 +6,18 @@ import { balssContext, klasContext, skolotContext } from "./contextProvider";
 export default function Nominacija({title, desc, skolens, vote, setVote, isNomiTime, isVoteTime}) {
     const [value, setValue] = useState('')
     const [klase, setKlase] = useState("Klase")
+    const [grupa, setGrupa] = useState("Grupa")
     const balsis = useContext(balssContext)
     const klases = useContext(klasContext)
     const skolotaji = useContext(skolotContext)
     const klasarr = Object.getOwnPropertyNames(klases).map(klase => <Dropdown.Item key={klase} value={klase} onClick={() => {setKlase(klase)}}>{klase}</Dropdown.Item>)
-    const skolotarr = skolotaji.map(skolotajs => <option key={skolotajs} value={skolotajs}>{skolotajs}</option>)
+    const skolotarr = Object.getOwnPropertyNames(skolotaji).map(grupa => <Dropdown.Item key={grupa} value={grupa} onClick={() => {setGrupa(grupa)}}>{grupa}</Dropdown.Item>)
     const balss = balsis.find(balss => balss._id === title)
 
-    function mapSkoleni() {
-        for (const prop in klases) {
-            if (prop === klase) {
-                return klases[prop].map(skolens => <option key={skolens} value={`${klase.replace('.', '-')}_${skolens}`}>{skolens}</option>)
+    function mapPeople(input, category) {
+        for (const prop in input) {
+            if (prop === category) {
+                return input[prop].map(skolens => <option key={skolens} value={`${category.replace('.', '-')}_${skolens}`}>{skolens}</option>)
             }
         }
     }
@@ -42,14 +43,19 @@ export default function Nominacija({title, desc, skolens, vote, setVote, isNomiT
                         </DropdownButton>
                         <Form.Select value={value} onChange={e => {setValue(e.target.value); setVote({...vote, [title]: e.target.value})}}>
                             <option>Izvēlies skolēnu</option>
-                            {mapSkoleni()}
+                            {mapPeople(klases, klase)}
                         </Form.Select>
                     </InputGroup>
                 :
-                    <Form.Select value={value} onChange={e => {setValue(e.target.value); setVote({...vote, [title]: e.target.value})}}>
-                        <option>Izvēlies skolotāju</option>
-                        {skolotarr}
-                    </Form.Select>
+                    <InputGroup>
+                        <DropdownButton variant="outline-light" title={grupa}>
+                            {skolotarr}
+                        </DropdownButton>
+                        <Form.Select value={value} onChange={e => {setValue(e.target.value); setVote({...vote, [title]: e.target.value})}}>
+                            <option>Izvēlies skolotāju</option>
+                            {mapPeople(skolotaji, grupa)}
+                        </Form.Select>
+                    </InputGroup>
                 }
             </Form.Group>
         )
