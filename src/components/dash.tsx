@@ -138,7 +138,7 @@ export default function Dashboard() {
             }]
         })
         Packer.toBlob(doc).then((blob) => {
-            saveAs(blob, 'test.docx')
+            saveAs(blob, 'kodi.docx')
         })
     }
 
