@@ -53,9 +53,7 @@ export default function Login({setSession, code, setCode, paramCode, type}: logi
 
     async function onAdminSubmit(e) {
         e.preventDefault();
-        console.log(apiKey)
         const credentials = Realm.Credentials.apiKey(apiKey);
-        console.log(credentials)
         const user = adminApp.logIn(credentials).then(
             (result) => {
                 setSession(true)
@@ -99,7 +97,7 @@ export default function Login({setSession, code, setCode, paramCode, type}: logi
                         <Form onSubmit={onAdminSubmit}>
                             <Form.Group className='mb-3'>
                                 <FloatingLabel label='Autentifikācijas kods'>
-                                    <Form.Control type='password' placeholder='Autentifikācijas kods' value={apiKey} onChange={e => {setApiKey(e.target.value);console.log(e)}} />
+                                    <Form.Control type='password' placeholder='Autentifikācijas kods' value={apiKey} onChange={e => setApiKey(e.target.value)} />
                                 </FloatingLabel>
                             </Form.Group>
                             <center>
