@@ -1,7 +1,7 @@
 {
   "name": "hbbs",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.1.0",
   "license": "BSD-3-Clause-Clear",
   "description": "Hāgena balvas balsošanas sistēma",
   "author": {
@@ -21,7 +21,8 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-dom": "^18.2.0",
-    "realm-web": "^2.0.0"
+    "realm-web": "^2.0.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/react": "^18.0.31",
