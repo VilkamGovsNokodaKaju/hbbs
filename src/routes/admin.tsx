@@ -1,7 +1,8 @@
 import Login from "../components/login"
 import * as Realm from "realm-web";
-import Dashboard from "../components/dash";
+import ChartDashboard from "../components/chartDash";
 import { useState } from "react";
+import Dashboard from "../components/dash";
 
 const realmApp = "hbbs-ntiaq"
 const app = new Realm.App({ id: realmApp });
@@ -11,7 +12,10 @@ export default function Admin() {
 
     if (validSession) {
         return (
-            <Dashboard app={app} />
+            <div>
+                <ChartDashboard app={app} />
+                <Dashboard />
+            </div>
         )
     } else {
         return (
