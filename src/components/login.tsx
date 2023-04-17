@@ -9,17 +9,17 @@ interface loginProps {
     setSession: (session: boolean) => void;
     code?: string;
     setCode?: (code: string) => void;
+    paramCode?: string;
     type: 'reg' | 'admin';
 }
 
-export default function Login({setSession, code, setCode, type}: loginProps) {
-    const initialCode = code
+export default function Login({setSession, code, setCode, paramCode, type}: loginProps) {
     const [alert, showAlert] = useState(false)
     const [alertMsg, setAlertMsg] = useState('')
     const [apiKey, setApiKey] = useState('')
 
     useEffect(() => {
-        if (initialCode) {
+        if (paramCode) {
             onRegSubmit(null)
         }
     })

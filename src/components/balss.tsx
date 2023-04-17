@@ -82,7 +82,7 @@ export default function Balss({codeParam}) {
     <div id='backgroundDiv'>
       {hideTimer ?
         <div id='balssDiv'>
-          {!validSession && <Login setSession={setSession} code={code} setCode={setCode} type='reg' />}
+          {!validSession && <Login setSession={setSession} code={code} setCode={setCode} paramCode={codeParam} type='reg' />}
           <div className='p-3'>
             <Form className='mx-auto' id='balssForm' onSubmit={onSubmit}>
               <center>
