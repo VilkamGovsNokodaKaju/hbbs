@@ -155,7 +155,7 @@ export default function Dashboard() {
             <Form onSubmit={(e) => onFileSubmit(e, 'skolotaji')}>
                 <Form.Group>
                     <Form.Label>Skolotāju faila ielāde</Form.Label>
-                    <Form.Control type="file" />
+                    <Form.Control type="file" accept=".xlsx" />
                 </Form.Group>
                 <Button variant="primary" type="submit">Ielādēt</Button>
             </Form>
