@@ -54,7 +54,8 @@ export default function Dashboard() {
             QRCode.toDataURL(
                 `https://www.avghagenabalva.lv/?code=${code}`,
                 {
-                    type: 'image/png'
+                    type: 'image/png',
+                    errorCorrectionLevel: 'H',
                 },
                 function (err, url) {
                     qrCodes.push(url)
