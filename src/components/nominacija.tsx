@@ -26,7 +26,8 @@ export default function Nominacija({title, desc, skolens, vote, setVote, isNomiT
         if (balss.vote1.length === 0) {
             return 'Neviens nebalsoja'
         }
-        const top3 = balss.vote1.sort((a: {cilveks: string, skaits: number}, b: {cilveks: string, skaits: number}) => b[1] - a[1]).slice(0, 3)
+        let filtrs = balss.vote1.filter(obj => Object.keys(obj).includes("skaits"));
+        const top3 = filtrs.sort((a: {cilveks: string, skaits: number}, b: {cilveks: string, skaits: number}) => b['skaits'] - a['skaits']).slice(0, 3)
         return top3.map(cilveks => <Form.Check type="radio" key={`${title}|${cilveks.cilveks}`} id={`${title}|${cilveks.cilveks}`} label={cilveks.cilveks.replace('-', '.').replace('_', ' ')} checked={value === `${title}|${cilveks.cilveks}`} onChange={e => {setValue(e.target.id); setVote({...vote, [title]: e.target.id.split('|')[1]})}} />)
     }
 
