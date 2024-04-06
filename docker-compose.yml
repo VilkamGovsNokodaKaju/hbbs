@@ -2,6 +2,7 @@ version: "3.9"
 services:
   hbbs:
     build: ./
+    pull_policy: build
     image: hbbs:latest
     container_name: hbbs
     ports:
@@ -14,6 +15,7 @@ services:
       - DB_NAME=$DB_NAME
   nginx:
     build: ./nginx
+    pull_policy: build
     image: nginx:latest
     container_name: nginx
     ports:
