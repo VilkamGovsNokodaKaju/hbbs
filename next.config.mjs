@@ -41,6 +41,7 @@ const nextConfig = {
             }
         ]
     },
+    output: "standalone"
 };
 
 export default bundleAnalyzer(nextConfig);
