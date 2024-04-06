@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# HBBS
 
-## Getting Started
+HBBS (Hāgena balvas balsošanas sistēma) ir tīmekļa lietotne paradzēta balsošanas nodrošināšanai ikgadējai Āgenskalna Valsts ģimnāzijas Hāgena balvai.
+## Funkcijas
 
-First, run the development server:
+* Balsošanas kodu ģenerēšana
+* Balsošanas rezultātu apkopošana
+* Balsošanas laika kontrole
+* Viegli lietojama saskarne
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Tehniskā informācija
+
+* Izveidots, izmantojot Next.js un React
+* MariaDB datubāze
+* 2 konteineru sistēmas arhitektūra ar nginx starpniekserveri
+
+## Uzstādīšana un iestatīšana
+
+1. Klonējiet repozitoriju
+2. Instalējiet atkarības ar `npm i`
+3. Izveidojiet `.env.local` failu un pievienojiet datubāzes akreditācijas datus.  
+Piemērs:
 ```
+DB_HOST=localhost
+DB_USER=user
+DB_PASSWORD=password
+DB_NAME=hbbs
+```
+4. Palaidiet izstrādes serveri ar `npm run dev`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Izvēršana
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Izveidojiet Docker attēlus, izmantojot `docker compose build`.
+2. Sagatavojiet SSL sertifikātu mapē `/etc/ssl`
+3. Palaidiet lietotni ar `docker compose --env-file .env.local up`
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Ieguldījumi
 
-## Learn More
+Ja jums ir kādi ieteikumi vai ziņojumi par kļūdām, nekautrējieties atvērt issue vai izveidot pull request.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
