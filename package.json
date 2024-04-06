@@ -1,47 +1,38 @@
 {
   "name": "hbbs",
+  "version": "1.0.0",
   "private": true,
-  "version": "1.2.1",
-  "license": "BSD-3-Clause-Clear",
-  "description": "Hāgena balvas balsošanas sistēma",
-  "author": {
-    "name": "Nils Niklāvs Plūmiņš",
-    "email": "voidzencorp@gmail.com",
-    "url": "https://github.com/voidvisor"
-  },
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@mongodb-js/charts-embed-dom": "^3.1.0",
-    "bootstrap": "^5.2.3",
-    "docx": "^8.0.2",
+    "@next/bundle-analyzer": "^14.1.4",
+    "docx": "^8.5.0",
     "file-saver": "^2.0.5",
-    "qrcode": "^1.5.1",
-    "react": "^18.2.0",
-    "react-bootstrap": "^2.7.2",
-    "react-dom": "^18.2.0",
-    "realm-web": "^2.0.0",
-    "xlsx": "^0.18.5"
+    "mariadb": "^3.3.0",
+    "material-symbols": "^0.17.1",
+    "next": "14.1.4",
+    "qrcode": "^1.5.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.1/xlsx-0.20.1.tgz"
   },
   "devDependencies": {
-    "@types/qrcode": "^1.5.0",
-    "@types/react": "^18.0.31",
-    "@types/react-dom": "^18.0.11",
-    "@typescript-eslint/eslint-plugin": "^5.57.0",
-    "@typescript-eslint/parser": "^5.57.0",
-    "@vitejs/plugin-react-swc": "^3.0.0",
-    "eslint": "^8.37.0",
-    "eslint-config-react": "^1.1.7",
-    "eslint-config-recommended": "^4.1.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-n": "^15.7.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "sass": "^1.60.0",
-    "typescript": "^4.9.3",
-    "vite": "^4.2.0"
+    "@tailwindcss/typography": "^0.5.10",
+    "@types/file-saver": "^2.0.7",
+    "@types/node": "^20",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "daisyui": "^4.7.3",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.4",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
   }
 }
