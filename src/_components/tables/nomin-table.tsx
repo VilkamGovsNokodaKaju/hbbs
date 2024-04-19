@@ -88,7 +88,7 @@ function NominRow({ n, remove }: { n: Nomin; remove: (id: UUID) => void; }) {
                 {editing ?
                     <form id={n.id} action={async (formData: FormData) => {
                         setError({ show: false, message: '' });
-                        const result = await updateNomin(formData, n.id);
+                        const result = await updateNomin(formData, n.id, n.tips);
                         if (result.success) {
                             setNomin({ ...nomin, virsraksts: formData.get('virsraksts') as string, apraksts: formData.get('apraksts') as string });
                         } else {

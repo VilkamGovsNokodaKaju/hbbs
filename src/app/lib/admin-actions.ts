@@ -245,7 +245,7 @@ export async function setPeople(_currentState: unknown, formData: FormData, type
         }
 }
 
-export async function updateNomin(formData: FormData, id: string) {
+export async function updateNomin(formData: FormData, id: string, tips: 'skolenu' | 'skolotaju') {
     const user = cookies().get('user')?.value
     let dbuser;
 
@@ -261,9 +261,9 @@ export async function updateNomin(formData: FormData, id: string) {
     try {
         const connection = await pool.getConnection();
         await connection.query(`
-            REPLACE INTO nominacijas (id, virsraksts, apraksts)
+            REPLACE INTO nominacijas (tips, id, virsraksts, apraksts)
             VALUES (?, ?, ?)
-        `, [id, formData.get('virsraksts'), formData.get('apraksts')]);
+        `, [tips, id, formData.get('virsraksts'), formData.get('apraksts')]);
         connection.end();
         return { success: true, message: "Nominācija veiksmīgi rediģēta!" }
     } catch (error) {
