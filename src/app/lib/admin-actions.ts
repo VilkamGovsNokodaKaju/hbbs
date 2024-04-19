@@ -230,6 +230,7 @@ export async function setPeople(_currentState: unknown, formData: FormData, type
             for (const header of headers) {
                 const values = data.slice(1).map(row => row[headers.indexOf(header)]);
                 for (let i = 0; i < values.length; i++) {
+                    if (typeof values[i] === 'undefined') continue
                     await connection.query(`
                         INSERT INTO ${source}
                         VALUES (?, ?)
