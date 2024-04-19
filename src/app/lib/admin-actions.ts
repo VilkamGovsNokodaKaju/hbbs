@@ -230,6 +230,7 @@ export async function setPeople(_currentState: unknown, formData: FormData, type
             for (const header of headers) {
                 const values = data.slice(1).map(row => row[headers.indexOf(header)]);
                 for (let i = 0; i < values.length; i++) {
+                    if (typeof values[i] === 'undefined') continue
                     await connection.query(`
                         INSERT INTO ${source}
                         VALUES (?, ?)
@@ -260,10 +261,9 @@ export async function updateNomin(formData: FormData, id: string) {
     try {
         const connection = await pool.getConnection();
         await connection.query(`
-            UPDATE nominacijas
-            SET virsraksts = ?, apraksts = ?
-            WHERE id = ?
-        `, [formData.get('virsraksts'), formData.get('apraksts'), id]);
+            REPLACE INTO nominacijas (id, virsraksts, apraksts)
+            VALUES (?, ?, ?)
+        `, [id, formData.get('virsraksts'), formData.get('apraksts')]);
         connection.end();
         return { success: true, message: "Nominācija veiksmīgi rediģēta!" }
     } catch (error) {
