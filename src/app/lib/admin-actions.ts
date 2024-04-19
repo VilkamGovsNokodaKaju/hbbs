@@ -261,10 +261,9 @@ export async function updateNomin(formData: FormData, id: string) {
     try {
         const connection = await pool.getConnection();
         await connection.query(`
-            UPDATE nominacijas
-            SET virsraksts = ?, apraksts = ?
-            WHERE id = ?
-        `, [formData.get('virsraksts'), formData.get('apraksts'), id]);
+            REPLACE INTO nominacijas (id, virsraksts, apraksts)
+            VALUES (?, ?, ?)
+        `, [id, formData.get('virsraksts'), formData.get('apraksts')]);
         connection.end();
         return { success: true, message: "Nominācija veiksmīgi rediģēta!" }
     } catch (error) {
