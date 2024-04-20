@@ -13,7 +13,8 @@ const pool = mariadb.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
+    idleTimeout: 60,
 });
 
 process.on("SIGINT", async function() {
@@ -30,52 +31,59 @@ interface Top {
 }
 
 export async function getVoterAmount() {
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         const [amount] = await connection.query("SELECT COUNT(*) FROM users");
-        connection.end();
         return Number(amount['COUNT(*)']) - 1;
     } catch (error) {
         console.error(error);
         throw error;
+    } finally {
+        if (connection) connection.end();
     }
 }
 
 export async function getNominatedAmount() {
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         const [amount] = await connection.query(`
             SELECT COUNT(*)
             FROM users
             WHERE nominets = 1 AND role = 'voter'
         `);
-        connection.end();
         return Number(amount['COUNT(*)']);
     } catch (error) {
         console.error(error);
         throw error;
+    } finally {
+        if (connection) connection.end();
     }
 }
 
 export async function getVotedAmount() {
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         const [amount] = await connection.query(`
             SELECT COUNT(*)
             FROM users
             WHERE balsots = 1 AND role = 'voter'
         `);
-        connection.end();
         return Number(amount['COUNT(*)']);
     } catch (error) {
         console.error(error);
         throw error;
+    } finally {
+        if (connection) connection.end();
     }
 }
 
 export async function getTop5() {
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         const results = await connection.query(`
             WITH ranked_values AS (
                 SELECT nominID, izvele, COUNT(*) as count, ROW_NUMBER() OVER (PARTITION BY nominID ORDER BY COUNT(*) DESC) as rn
@@ -87,17 +95,19 @@ export async function getTop5() {
             WHERE rn <= 5
             GROUP BY nominID
         `) as Top[];
-        connection.end();
         return results;
     } catch (error) {
         console.error(error);
         throw error;
+    } finally {
+        if (connection) connection.end();
     }
 }
 
 export async function getElite() {
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         const results = await connection.query(`
             WITH ranked_values AS (
                 SELECT nominID, izvele, COUNT(*) as count
@@ -108,11 +118,12 @@ export async function getElite() {
             FROM ranked_values
             GROUP BY nominID
         `) as Top[];
-        connection.end();
         return results;
     } catch (error) {
         console.error(error);
         throw error;
+    } finally {
+        if (connection) connection.end();
     }
 }
 
@@ -141,8 +152,9 @@ export async function setFinalists(_currentState: unknown, formData: FormData) {
 
     const nominID = finalisti[0][0]
 
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         await connection.query(`
             DELETE FROM finalists
             WHERE nominID = ?
@@ -153,11 +165,12 @@ export async function setFinalists(_currentState: unknown, formData: FormData) {
                 VALUES (?, ?)
             `, [nominID, finalisti[i][1]]);
         }
-        connection.end();
         return { success: true, message: "Finālisti izvēlēti!" }
     } catch (error) {
         console.error(error);
         return { success: false, message: "Datubāzes kļūda!" }
+    } finally {
+        if (connection) connection.end();
     }
 }
 
@@ -183,18 +196,20 @@ export async function changePassword(_currentState: unknown, formData: FormData)
     const hashed = `admin:${buf.toString('hex')}.${salt}`
     cookies().set('user', hashed, { secure: true, httpOnly: true, sameSite: 'strict', maxAge: 60 * 60 * 24 * 1 })
 
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         await connection.query(`
             UPDATE users
             SET id = ?
             WHERE role = 'admin'
         `, [hashed]);
-        connection.end();
         return { success: true, message: "Parole mainīta!" }
     } catch (error) {
         console.error(error);
         return { success: false, message: "Datubāzes kļūda!" }
+    } finally {
+        if (connection) connection.end();
     }
 }
 
@@ -218,31 +233,33 @@ export async function setPeople(_currentState: unknown, formData: FormData, type
 
     const source = type ? 'skolotaji' : 'skoleni'
     const fileBuf = Buffer.from(await (file as File).arrayBuffer())
-        try {
-            const wb = read(fileBuf, { type: 'buffer' });
-            const ws = wb.Sheets[wb.SheetNames[0]]
-            const data: string[][] = utils.sheet_to_json(ws, { header: 1 })
+    let connection;
+    try {
+        const wb = read(fileBuf, { type: 'buffer' });
+        const ws = wb.Sheets[wb.SheetNames[0]]
+        const data: string[][] = utils.sheet_to_json(ws, { header: 1 })
 
-            const connection = await pool.getConnection();
-            await connection.query(`TRUNCATE TABLE ${source}`);
+        connection = await pool.getConnection();
+        await connection.query(`TRUNCATE TABLE ${source}`);
 
-            const headers = data[0];
-            for (const header of headers) {
-                const values = data.slice(1).map(row => row[headers.indexOf(header)]);
-                for (let i = 0; i < values.length; i++) {
-                    if (typeof values[i] === 'undefined') continue
-                    await connection.query(`
-                        INSERT INTO ${source}
-                        VALUES (?, ?)
-                    `, [header, values[i]]);
-                }
+        const headers = data[0];
+        for (const header of headers) {
+            const values = data.slice(1).map(row => row[headers.indexOf(header)]);
+            for (let i = 0; i < values.length; i++) {
+                if (typeof values[i] === 'undefined') continue
+                await connection.query(`
+                    INSERT INTO ${source}
+                    VALUES (?, ?)
+                `, [header, values[i]]);
             }
-            connection.end();
-            return { success: true, message: "Fails veiksmīgi augšupielādēts!" }
-        } catch (error) {
-            console.error(error);
-            return { success: false, message: "Datubāzes kļūda!" }
         }
+        return { success: true, message: "Fails veiksmīgi augšupielādēts!" }
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: "Datubāzes kļūda!" }
+    } finally {
+        if (connection) connection.end();
+    }
 }
 
 export async function updateNomin(formData: FormData, id: string, tips: 'skolenu' | 'skolotaju') {
@@ -258,17 +275,19 @@ export async function updateNomin(formData: FormData, id: string, tips: 'skolenu
         redirect('/login')
     }
 
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         await connection.query(`
             REPLACE INTO nominacijas (tips, id, virsraksts, apraksts)
             VALUES (?, ?, ?, ?)
         `, [tips, id, formData.get('virsraksts'), formData.get('apraksts')]);
-        connection.end();
         return { success: true, message: "Nominācija veiksmīgi rediģēta!" }
     } catch (error) {
         console.error(error);
         return { success: false, message: "Datubāzes kļūda!" }
+    } finally {
+        if (connection) connection.end();
     }
 }
 
@@ -285,17 +304,19 @@ export async function removeNomin(id: string) {
         redirect('/login')
     }
 
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         await connection.query(`
             DELETE FROM nominacijas
             WHERE id = ?
         `, [id]);
-        connection.end();
         return { success: true, message: "Nominācija veiksmīgi izdzēsta!" }
     } catch (error) {
         console.error(error);
         return { success: false, message: "Datubāzes kļūda!" }
+    } finally {
+        if (connection) connection.end();
     }
 }
 
@@ -304,14 +325,16 @@ export async function generateUUID() {
 }
 
 export async function getTimestamps() {
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         const timestamps = await connection.query("SELECT * FROM timestamps");
-        connection.end();
         return timestamps;
     } catch (error) {
         console.error(error);
         throw error;
+    } finally {
+        if (connection) connection.end();
     }
 }
 
@@ -335,8 +358,9 @@ export async function setTimestamps(_currentState: unknown, formData: FormData, 
     const balssStart = Date.parse(formData.get('balsosana_sakums') as string) - timezoneOffset
     const balssEnd = Date.parse(formData.get('balsosana_beigas') as string) - timezoneOffset
 
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         await connection.query(`
             UPDATE timestamps
             SET start = ?, end = ?
@@ -347,11 +371,12 @@ export async function setTimestamps(_currentState: unknown, formData: FormData, 
             SET start = ?, end = ?
             WHERE period = 'balsosana'
         `, [balssStart, balssEnd]);
-        connection.end();
         return { success: true, message: "Laiki veiksmīgi mainīti!" }
     } catch (error) {
         console.error(error);
         return { success: false, message: "Datubāzes kļūda!" }
+    } finally {
+        if (connection) connection.end();
     }
 }
 
@@ -368,19 +393,21 @@ export async function deleteEverything() {
         redirect('/login')
     }
 
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         await connection.query("TRUNCATE TABLE karta1");
         await connection.query("TRUNCATE TABLE karta2");
         await connection.query(`
             UPDATE users
             SET nominets = 0, balsots = 0
         `);
-        connection.end();
         return { success: true, message: "Visi dati dzēsti!" }
     } catch (error) {
         console.error(error);
         return { success: false, message: "Datubāzes kļūda!" }
+    } finally {
+        if (connection) connection.end();
     }
 }
 
@@ -487,8 +514,9 @@ export async function generateCodes(formData: FormData) {
     
     const docBase64 = await Packer.toBase64String(doc)
 
+    let connection;
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         if (type === 'new') {
             await connection.query(`
                 DELETE FROM users
@@ -501,10 +529,11 @@ export async function generateCodes(formData: FormData) {
                 VALUES (?, 'voter')
             `, [code]);
         }
-        connection.end();
         return { success: true, message: "Kodi veiksmīgi pievienoti!", file: docBase64 }
     } catch (error) {
         console.error(error);
         return { success: false, message: "Datubāzes kļūda!" }
+    } finally {
+        if (connection) connection.end();
     }
 }
