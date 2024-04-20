@@ -262,7 +262,7 @@ export async function updateNomin(formData: FormData, id: string, tips: 'skolenu
         const connection = await pool.getConnection();
         await connection.query(`
             REPLACE INTO nominacijas (tips, id, virsraksts, apraksts)
-            VALUES (?, ?, ?)
+            VALUES (?, ?, ?, ?)
         `, [tips, id, formData.get('virsraksts'), formData.get('apraksts')]);
         connection.end();
         return { success: true, message: "Nominācija veiksmīgi rediģēta!" }
