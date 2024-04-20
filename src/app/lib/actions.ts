@@ -70,8 +70,9 @@ export async function authenticate(_currentState: unknown, formData: FormData) {
 export async function checkUser(userID: string) {
   const userCookie = cookies().get('user')
   userID = decodeURIComponent(userID)
+  let connection;
   try {
-    const connection = await pool.getConnection();
+    connection = await pool.getConnection();
     const [user] = await connection.query("SELECT * FROM users WHERE id = ?", [userID]);
     if (userID.startsWith('admin:')) {
       const [admin] = await connection.query("SELECT * FROM users WHERE role = 'admin'");
@@ -89,7 +90,6 @@ export async function checkUser(userID: string) {
         return {admin: true, cookie: `admin:${testBuf.toString('hex')}.${salt}`}
       }
     }
-    connection.end();
     if (!user) {
       if (userCookie) {
         cookies().delete('user')
@@ -101,17 +101,21 @@ export async function checkUser(userID: string) {
   } catch (error) {
     console.error(error)
     throw error
+  } finally {
+    if (connection) connection.end();
   }
 }
 
 export async function checkTime() { 
-  let timestamps
+  let timestamps;
+  let connection;
   try {
-    const connection = await pool.getConnection();
+    connection = await pool.getConnection();
     timestamps = await connection.query("SELECT * FROM timestamps");
-    connection.end();
   } catch (error) {
     console.error(error)
+  } finally {
+    if (connection) connection.end();
   }
   const now = new Date();
   if (now < timestamps.find((timestamp: timestamp) => timestamp.period == "nominacijas").start) {
@@ -129,52 +133,58 @@ export async function checkTime() {
 
 export async function getGrupas(source: string) {
   let grupas: Grupa[] = [];
+  let connection;
   try {
-    const connection = await pool.getConnection();
+    connection = await pool.getConnection();
     const result = (await connection.query(`
       SELECT grupa, GROUP_CONCAT(vards SEPARATOR ',') AS cilveki
       FROM ${source}
       GROUP BY grupa
     `)) as { grupa: string, cilveki: string }[]
-    connection.end();
 
     grupas = result.map(({ grupa, cilveki }) => ({ grupa, cilveki: cilveki.split(',') }))
 
   } catch (error) {
     console.error(error)
+  } finally {
+    if (connection) connection.end();
   }
   return grupas;
 }
 
 export async function getNominacijas() {
   let nominacijas: Nomin[] = [];
+  let connection;
   try {
-    const connection = await pool.getConnection();
+    connection = await pool.getConnection();
     const result = (await connection.query(`
       SELECT *
       FROM nominacijas
     `)) as { tips: 'skolenu'|'skolotaju', id: UUID, virsraksts: string, apraksts: string }[]
-    connection.end();
     nominacijas = result
   } catch (error) {
     console.error(error)
+  } finally {
+    if (connection) connection.end();
   }
   return nominacijas;
 }
 
 export async function getFinalists() {
   let finalists: Finalists[] = [];
+  let connection;
   try {
-    const connection = await pool.getConnection();
+    connection = await pool.getConnection();
     const result = (await connection.query(`
       SELECT id, GROUP_CONCAT(vards SEPARATOR ';') as cilveki
       FROM finalists
       GROUP BY id
     `)) as { id: UUID, cilveki: string }[]
-    connection.end();
     finalists = result.map(({ id, cilveki }) => ({ id, cilveki: cilveki.split(';') }))
   } catch (error) {
     console.error(error)
+  } finally {
+    if (connection) connection.end();
   }
   return finalists;
 }
@@ -206,8 +216,9 @@ export async function submitForm(_currentState: unknown, formData: FormData) {
     }
   }
   
+  let connection;
   try {
-    const connection = await pool.getConnection();
+    connection = await pool.getConnection();
     await connection.query(`
       UPDATE users
       SET ${period[0] == 1 ? 'nominets' : period[0] == 3 && 'balsots'} = 1
@@ -219,11 +230,12 @@ export async function submitForm(_currentState: unknown, formData: FormData) {
         VALUES (?, ?, ?)
       `, [user, entry[0], entry[1]])
     }
-    connection.end();
     return {success: true, message: "Balsošana veiksmīga!"}
   } catch (error) {
     console.error(error)
     return {success: false, message: "Datubāzes kļūda!"}
+  } finally {
+    if (connection) connection.end();
   }
 }
 
@@ -242,17 +254,19 @@ export async function getChoices(period: number) {
 
   let choices: Izvele[] = [];
 
+  let connection;
   try {
-    const connection = await pool.getConnection();
+    connection = await pool.getConnection();
     const result = (await connection.query(`
       SELECT nominID, izvele
       FROM ${period == 1 ? 'karta1' : period == 3 && 'karta2'}
       WHERE userID = ?
     `, [user])) as Izvele[]
-    connection.end();
     choices = result
   } catch (error) {
     console.error(error)
+  } finally {
+    if (connection) connection.end();
   }
   return choices
 }
