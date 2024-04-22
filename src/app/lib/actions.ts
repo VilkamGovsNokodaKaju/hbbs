@@ -93,7 +93,7 @@ export async function checkUser(userID: string) {
     }
     if (!user) {
       if (userCookie) {
-        cookies().delete('user')
+        redirect('/logout')
       }
       return null
     } else {
