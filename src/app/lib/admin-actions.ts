@@ -86,9 +86,10 @@ export async function getTop5() {
         connection = await pool.getConnection();
         const results = await connection.query(`
             WITH ranked_values AS (
-                SELECT nominID, izvele, COUNT(*) as count, ROW_NUMBER() OVER (PARTITION BY nominID ORDER BY COUNT(*) DESC) as rn
+                SELECT nominID, izvele, COUNT(*) as count, ROW_NUMBER() OVER (PARTITION BY nominID ORDER BY count DESC) as rn
                 FROM karta1
                 GROUP BY nominID, izvele
+                ORDER BY count DESC
             )
             SELECT nominID, JSON_ARRAYAGG(JSON_OBJECT('izvele', izvele, 'count', count)) as top_izveles
             FROM ranked_values
@@ -113,6 +114,7 @@ export async function getElite() {
                 SELECT nominID, izvele, COUNT(*) as count
                 FROM karta2
                 GROUP BY nominID, izvele
+                ORDER BY count DESC
             )
             SELECT nominID, JSON_ARRAYAGG(JSON_OBJECT('izvele', izvele, 'count', count)) as top_izveles
             FROM ranked_values
