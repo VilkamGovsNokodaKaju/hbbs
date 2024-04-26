@@ -180,8 +180,8 @@ export async function getFinalists() {
       SELECT nominID, GROUP_CONCAT(vards SEPARATOR ';') as cilveki
       FROM finalists
       GROUP BY nominID
-    `)) as { id: UUID, cilveki: string }[]
-    finalists = result.map(({ id, cilveki }) => ({ id, cilveki: cilveki.split(';') }))
+    `)) as { nominID: UUID, cilveki: string }[]
+    finalists = result.map(({ nominID: id, cilveki }) => ({ id, cilveki: cilveki.split(';') }))
   } catch (error) {
     console.error(error)
   } finally {
