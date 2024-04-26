@@ -179,7 +179,7 @@ export async function getFinalists() {
     const result = (await connection.query(`
       SELECT id, GROUP_CONCAT(vards SEPARATOR ';') as cilveki
       FROM finalists
-      GROUP BY id
+      GROUP BY nominID
     `)) as { id: UUID, cilveki: string }[]
     finalists = result.map(({ id, cilveki }) => ({ id, cilveki: cilveki.split(';') }))
   } catch (error) {
