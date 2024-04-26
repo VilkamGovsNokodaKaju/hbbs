@@ -177,7 +177,7 @@ export async function getFinalists() {
   try {
     connection = await pool.getConnection();
     const result = (await connection.query(`
-      SELECT id, GROUP_CONCAT(vards SEPARATOR ';') as cilveki
+      SELECT nominID, GROUP_CONCAT(vards SEPARATOR ';') as cilveki
       FROM finalists
       GROUP BY nominID
     `)) as { id: UUID, cilveki: string }[]
