@@ -158,11 +158,20 @@ if (now < (nominationTimestamp.start ?? Infinity)) {
 
 }
 
-export async function getTimestamps() {
-  const response = await fetch('/api/timestamps');
-  const yourActualTimestampsArray = await response.json();
-  return yourActualTimestampsArray || [];
+function processTimestamps(timestamps: any[]) {
+    if (!Array.isArray(timestamps)) {
+        console.error('timestamps is undefined or not an array');
+        return;
+    }
+
+    const nominationTimestamp = timestamps.find(t => t.period === "nominacijas");
+    const votingTimestamp = timestamps.find(t => t.period === "balsosana");
+    // ... rest of your code
 }
+
+// Usage:
+const myTimestamps = await getTimestamps(); // Or from another source
+processTimestamps(myTimestamps);
 
 
 export async function getGrupas(source: string) {
