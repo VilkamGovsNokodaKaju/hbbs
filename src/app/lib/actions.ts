@@ -108,22 +108,19 @@ export async function checkUser(userID: string) {
 }
 
 
-if (!Array.isArray(timestamps)) {
-  console.error('timestamps is undefined or not an array');
-  return; // Handle it by exiting the function or setting a default value
-}
-
 function processTimestamps() {
     if (!Array.isArray(timestamps)) {
         console.error('timestamps is undefined or not an array');
-        return; // Now valid, because it's inside a function
+        return; // This is valid inside the function
     }
 
-    // Your existing logic that uses timestamps
     const nominationTimestamp = timestamps.find((timestamp: timestamp) => timestamp.period === "nominacijas");
     const votingTimestamp = timestamps.find((timestamp: timestamp) => timestamp.period === "balsosana");
-    // Further code...
+    // Rest of your logic...
 }
+
+// Then call the function when needed
+processTimestamps();
 
 
 export async function checkTime() { 
