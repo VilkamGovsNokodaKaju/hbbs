@@ -158,7 +158,11 @@ if (now < (nominationTimestamp.start ?? Infinity)) {
 
 }
 
-const timestamps = yourActualTimestampsArray || [];
+export async function getTimestamps() {
+  const response = await fetch('/api/timestamps');
+  const yourActualTimestampsArray = await response.json();
+  return yourActualTimestampsArray || [];
+}
 
 
 export async function getGrupas(source: string) {
