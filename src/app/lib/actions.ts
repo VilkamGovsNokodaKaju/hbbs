@@ -107,6 +107,25 @@ export async function checkUser(userID: string) {
   }
 }
 
+
+if (!Array.isArray(timestamps)) {
+  console.error('timestamps is undefined or not an array');
+  return; // Handle it by exiting the function or setting a default value
+}
+
+function processTimestamps() {
+    if (!Array.isArray(timestamps)) {
+        console.error('timestamps is undefined or not an array');
+        return; // Now valid, because it's inside a function
+    }
+
+    // Your existing logic that uses timestamps
+    const nominationTimestamp = timestamps.find((timestamp: timestamp) => timestamp.period === "nominacijas");
+    const votingTimestamp = timestamps.find((timestamp: timestamp) => timestamp.period === "balsosana");
+    // Further code...
+}
+
+
 export async function checkTime() { 
   let timestamps;
   let connection;
@@ -119,18 +138,31 @@ export async function checkTime() {
     if (connection) connection.end();
   }
   const now = new Date();
-  if (now < timestamps.find((timestamp: timestamp) => timestamp.period == "nominacijas").start) {
-    return [0, timestamps.find((timestamp: timestamp) => timestamp.period == "nominacijas").start]
-  } else if (now > timestamps.find((timestamp: timestamp) => timestamp.period == "nominacijas").start && now < timestamps.find((timestamp: timestamp) => timestamp.period == "nominacijas").end) {
-    return [1, timestamps.find((timestamp: timestamp) => timestamp.period == "nominacijas").end]
-  } else if (now > timestamps.find((timestamp: timestamp) => timestamp.period == "nominacijas").end && now < timestamps.find((timestamp: timestamp) => timestamp.period == "balsosana").start) {
-    return [2, timestamps.find((timestamp: timestamp) => timestamp.period == "balsosana").start]
-  } else if (now > timestamps.find((timestamp: timestamp) => timestamp.period == "balsosana").start && now < timestamps.find((timestamp: timestamp) => timestamp.period == "balsosana").end) {
-    return [3, timestamps.find((timestamp: timestamp) => timestamp.period == "balsosana").end]
-  } else {
-    return [4, 0]
-  }
+
+const nominationTimestamp = timestamps.find((timestamp: timestamp) => timestamp.period == "nominacijas");
+const votingTimestamp = timestamps.find((timestamp: timestamp) => timestamp.period == "balsosana");
+
+if (!nominationTimestamp || !votingTimestamp) {
+  console.error('Timestamp data is missing');
+  return; // Or handle the missing data case
 }
+
+if (now < (nominationTimestamp.start ?? Infinity)) {
+    return [0, nominationTimestamp.start ?? 0];
+} else if (now > (nominationTimestamp.start ?? 0) && now < (nominationTimestamp.end ?? 0)) {
+    return [1, nominationTimestamp.end ?? 0];
+} else if (now > (nominationTimestamp.end ?? 0) && now < (votingTimestamp.start ?? Infinity)) {
+    return [2, votingTimestamp.start ?? 0];
+} else if (now > (votingTimestamp.start ?? 0) && now < (votingTimestamp.end ?? 0)) {
+    return [3, votingTimestamp.end ?? 0];
+}
+
+
+
+}
+
+const timestamps = yourActualTimestampsArray || [];
+
 
 export async function getGrupas(source: string) {
   let grupas: Grupa[] = [];
@@ -271,3 +303,5 @@ export async function getChoices(period: number) {
   }
   return choices
 }
+
+console.log(timestamps); // This will print the timestamps array to the console
